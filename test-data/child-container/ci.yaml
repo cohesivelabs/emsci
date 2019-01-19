@@ -1,0 +1,13 @@
+test:
+  commands:
+    - command: "npm run lint"
+      args:
+        - "-- --fix"
+    - command: "npm test"
+env:
+  - NODE_ENV=test
+deps:
+  - name: "test-service1"
+    image: "busybox:latest"
+    env:
+      - "TEST=true"

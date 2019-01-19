@@ -1,0 +1,9 @@
+test:
+  commands:
+    - command: "echo finished"
+env:
+  - NODE_ENV=test
+deps:
+  - image: "busybox:latest"
+sharedDeps:
+  - image: "mssql:latest"

@@ -1,0 +1,15 @@
+version: '3.7'
+services:
+  emsci:
+    build:
+        target: build-stage
+        context: .
+    environment:
+      - DOCKER_HOST=tcp://docker:2375
+    depends_on:
+      - docker
+    command: tail -f /dev/null
+  docker:
+    image: docker:stable-dind
+    privileged: true
+    command: dockerd --host 0.0.0.0:2375
