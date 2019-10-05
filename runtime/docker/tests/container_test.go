@@ -1,23 +1,22 @@
-package docker
+package tests
 
 import (
 	"context"
 	"testing"
+	"emsci/runtime/docker"
 
 	uuid "github.com/gofrs/uuid"
 )
 
 func TestDockerClient_ContainerCreate(t *testing.T) {
-	t.Run("should be able to create a container", func (t *testing.T) {
-		client, err := Client()
-		if err != nil {
-			t.Error(err)
+	t.Run("should be able to create a container", func(t *testing.T) {
+
+		client := docker.DockerClient{
+			Api: MockDockerClient{},
 		}
 
 		imageName := "busybox:latest"
 		ctx := context.Background()
-
-		client.ImagePull(ctx, imageName)
 
 		containerName := "container-create-test-1-" + uuid.Must(uuid.NewV4()).String()
 		result, err := client.ContainerCreate(ctx, imageName, containerName)
@@ -39,12 +38,11 @@ func TestDockerClient_ContainerCreate(t *testing.T) {
 }
 
 func TestDockerClient_ContainerGetByName(t *testing.T) {
-	t.Run("Should be able to get container by name", func (t *testing.T) {
+	t.Run("Should be able to get container by name", func(t *testing.T) {
 		containerName := "container-getByName-test-1-" + uuid.Must(uuid.NewV4()).String()
 
-		client, err := Client()
-		if err != nil {
-			t.Error(err)
+		client := docker.DockerClient{
+			Api: mockDockerClient,
 		}
 
 		imageName := "busybox:latest"
@@ -76,9 +74,8 @@ func TestDockerClient_ContainerGetByName(t *testing.T) {
 
 func TestDockerClient_ContainerList(t *testing.T) {
 	t.Run("should be able to get a list of containers", func(t *testing.T) {
-		client, err := Client()
-		if err != nil {
-			t.Error(err)
+		client := docker.DockerClient{
+			Api: mockDockerClient,
 		}
 
 		imageName := "busybox:latest"

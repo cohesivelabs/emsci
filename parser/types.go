@@ -1,11 +1,11 @@
 package parser
 
 type Command struct {
-	Image string
+	Image      string
 	WorkingDir string
 	Entrypoint string
-	Command string
-	Args    []string
+	Command    string
+	Args       []string
 }
 
 type ContainerCommand struct {

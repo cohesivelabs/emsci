@@ -10,7 +10,7 @@ import (
 func (client DockerClient) ImagePull(ctx context.Context, imageName string) error {
 	options := types.ImagePullOptions{}
 
-	resp, err := client.Daemon.ImagePull(ctx, imageName, options)
+	resp, err := client.Api.ImagePull(ctx, imageName, options)
 	if err != nil {
 		return err
 	}
@@ -24,7 +24,7 @@ func (client DockerClient) ImagePull(ctx context.Context, imageName string) erro
 }
 
 func (client DockerClient) ImageFind(ctx context.Context, imageName string) (id *string, err error) {
-	images, err := client.Daemon.ImageList(ctx, types.ImageListOptions{})
+	images, err := client.Api.ImageList(ctx, types.ImageListOptions{})
 	if err != nil {
 		return nil, err
 	}
@@ -67,7 +67,7 @@ func (client DockerClient) ImageDelete(ctx context.Context, imageName string) er
 		fmt.Print(err)
 	}
 
-	_, err = client.Daemon.ImageRemove(ctx, imageName, types.ImageRemoveOptions{Force: true, PruneChildren: true})
+	_, err = client.Api.ImageRemove(ctx, imageName, types.ImageRemoveOptions{Force: true, PruneChildren: true})
 	if err != nil {
 		return err
 	}

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/jmartin84/emsci/cmd"
+	"emsci/cmd"
 )
 
 func main() {

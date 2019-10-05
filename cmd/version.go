@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/jmartin84/emsci/version"
+	"emsci/version"
 	"github.com/spf13/cobra"
 )
 
