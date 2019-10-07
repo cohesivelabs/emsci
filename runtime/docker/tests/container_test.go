@@ -2,29 +2,27 @@ package tests
 
 import (
 	"context"
-	"testing"
 	"emsci/runtime/docker"
-
+	"fmt"
 	uuid "github.com/gofrs/uuid"
+	"testing"
 )
 
 func TestDockerClient_ContainerCreate(t *testing.T) {
 	t.Run("should be able to create a container", func(t *testing.T) {
 
 		client := docker.DockerClient{
-			Api: MockDockerClient{},
+			Api: NewMockDockerClient(),
 		}
 
 		imageName := "busybox:latest"
-		ctx := context.Background()
+		ctx := context.TODO()
 
 		containerName := "container-create-test-1-" + uuid.Must(uuid.NewV4()).String()
 		result, err := client.ContainerCreate(ctx, imageName, containerName)
 		if err != nil {
 			t.Error(err)
 		}
-
-		defer client.ContainerRemove(ctx, containerName)
 
 		container, err := client.ContainerGetByID(ctx, result)
 		if err != nil {
@@ -34,6 +32,23 @@ func TestDockerClient_ContainerCreate(t *testing.T) {
 		if container == nil {
 			t.Errorf("Container with ID %v was not found", result)
 		}
+
+		if result != container.ID {
+			t.Error("Container id does not match")
+		}
+
+		exists := false
+
+		for _, v := range container.Names {
+			if containerName == v {
+
+				exists = true
+			}
+		}
+
+		if !exists {
+			t.Error("Container id does not match")
+		}
 	})
 }
 
@@ -42,24 +57,21 @@ func TestDockerClient_ContainerGetByName(t *testing.T) {
 		containerName := "container-getByName-test-1-" + uuid.Must(uuid.NewV4()).String()
 
 		client := docker.DockerClient{
-			Api: mockDockerClient,
+			Api: NewMockDockerClient(),
 		}
 
 		imageName := "busybox:latest"
 
-		ctx := context.Background()
-		defer client.ImageDelete(ctx, imageName)
+		ctx := context.TODO()
 
 		if err := client.ImagePull(ctx, imageName); err != nil {
 			t.Error(err)
 		}
 
-		result, err := client.ContainerCreate(ctx, imageName, containerName)
+		_, err := client.ContainerCreate(ctx, imageName, containerName)
 		if err != nil {
 			t.Error(err)
 		}
-
-		defer client.ContainerRemove(ctx, result)
 
 		container, err := client.ContainerGetByName(ctx, containerName)
 		if err != nil {
@@ -69,20 +81,32 @@ func TestDockerClient_ContainerGetByName(t *testing.T) {
 		if container == nil {
 			t.Errorf("Container with name %v was not found", containerName)
 		}
+
+		exists := false
+
+		fmt.Printf("%v", container)
+		for _, v := range container.Names {
+			if containerName == v {
+				exists = true
+			}
+		}
+
+		if !exists {
+			t.Error("Container name does not match")
+		}
 	})
 }
 
 func TestDockerClient_ContainerList(t *testing.T) {
 	t.Run("should be able to get a list of containers", func(t *testing.T) {
 		client := docker.DockerClient{
-			Api: mockDockerClient,
+			Api: NewMockDockerClient(),
 		}
 
 		imageName := "busybox:latest"
-		ctx := context.Background()
+		ctx := context.TODO()
 
 		client.ImagePull(ctx, imageName)
-		defer client.ImageDelete(ctx, imageName)
 
 		container1Ch := make(chan string)
 		container2Ch := make(chan string)

@@ -1,9 +1,9 @@
 package integration
 
 import (
-	"testing"
 	"context"
 	docker "emsci/runtime/docker"
+	"testing"
 	"time"
 )
 

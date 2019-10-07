@@ -14,7 +14,7 @@ type ClientConfig struct {
 
 type DockerApi interface {
 	Info(ctx context.Context) (types.Info, error)
-	ClientVersion () string
+	ClientVersion() string
 	ImagePull(ctx context.Context, refStr string, options types.ImagePullOptions) (io.ReadCloser, error)
 	ImageList(ctx context.Context, options types.ImageListOptions) ([]types.ImageSummary, error)
 	ImageRemove(ctx context.Context, imageID string, options types.ImageRemoveOptions) ([]types.ImageDeleteResponseItem, error)
@@ -24,4 +24,4 @@ type DockerApi interface {
 	ContainerKill(ctx context.Context, containerID, signal string) error
 }
 
-type DockerClient struct { Api DockerApi }
+type DockerClient struct{ Api DockerApi }

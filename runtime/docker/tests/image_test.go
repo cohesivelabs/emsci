@@ -2,21 +2,17 @@ package tests
 
 import (
 	"context"
+	"emsci/runtime/docker"
 	"testing"
 )
 
-var mockDockerClient MockDockerClient = MockDockerClient{}
-
 func TestDockerClient_ImagePull(t *testing.T) {
-	client := DockerClient{
-		Api: mockDockerClient,
+	client := docker.DockerClient{
+		Api: NewMockDockerClient(),
 	}
-
 
 	imageName := "busybox:latest"
 	ctx := context.Background()
-
-	defer client.ImageDelete(ctx, imageName)
 
 	client.ImagePull(ctx, imageName)
 

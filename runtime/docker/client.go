@@ -26,7 +26,7 @@ func NewClientFromConfig(config ClientConfig) (DockerClient, error) {
 	return DockerClient{Api: api}, nil
 }
 
-func (client DockerClient) ServerVersion (ctx context.Context) (string, error) {
+func (client DockerClient) ServerVersion(ctx context.Context) (string, error) {
 	info, err := client.Api.Info(ctx)
 	if err != nil {
 		return "", err
@@ -35,6 +35,6 @@ func (client DockerClient) ServerVersion (ctx context.Context) (string, error) {
 	return info.ServerVersion, nil
 }
 
-func (client DockerClient) ClientVersion () string {
+func (client DockerClient) ClientVersion() string {
 	return client.Api.ClientVersion()
 }

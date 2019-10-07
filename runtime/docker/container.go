@@ -2,10 +2,10 @@ package docker
 
 import (
 	"context"
+	"emsci/log"
+	runtimeTypes "emsci/runtime/types"
 	dockerTypes "github.com/docker/docker/api/types"
 	containerTypes "github.com/docker/docker/api/types/container"
-	runtimeTypes "emsci/runtime/types"
-	"emsci/log"
 )
 
 // ContainerCreate - create a container given an image name
@@ -62,21 +62,17 @@ func (client DockerClient) ContainerGetByID(ctx context.Context, id string) (*ru
 }
 
 // ContainerGetByName - return a container instance for a given name
-func (client DockerClient) ContainerGetByName(ctx context.Context, name string) (*runtimeTypes.Container, error) {
-	var container *runtimeTypes.Container = nil
-	var err error
-
+func (client DockerClient) ContainerGetByName(ctx context.Context, name string) (container *runtimeTypes.Container, err error) {
 	if containers, err := client.ContainerList(ctx); err == nil {
 		for _, item := range containers {
 			for _, x := range item.Names {
-				if x == "/"+name {
+				if x == name {
 					container = &item
 					break
 				}
 			}
 		}
 	}
-
 	return container, err
 }
 
@@ -88,25 +84,30 @@ func (client DockerClient) ContainerList(ctx context.Context) ([]runtimeTypes.Co
 	if containers, err := client.Api.ContainerList(ctx, dockerTypes.ContainerListOptions{}); err == nil {
 		for _, dc := range containers {
 			ports := make([]runtimeTypes.Port, 0)
+			names := make([]string, 0)
+
+			for _, n := range dc.Names {
+				names = append(names, n[1:])
+			}
 
 			for _, p := range dc.Ports {
 				ports = append(ports, runtimeTypes.Port{
-					IP: p.IP,
+					IP:          p.IP,
 					PrivatePort: p.PrivatePort,
-					PublicPort: p.PublicPort,
-					Type: p.Type,
+					PublicPort:  p.PublicPort,
+					Type:        p.Type,
 				})
 			}
 
 			runtimeContainers = append(runtimeContainers, runtimeTypes.Container{
-				ID: dc.ID,
-				Names: dc.Names,
-				Image: dc.Image,
+				ID:      dc.ID,
+				Names:   names,
+				Image:   dc.Image,
 				ImageID: dc.ImageID,
 				Created: dc.Created,
-				State: dc.State,
-				Status: dc.Status,
-				Ports: ports,
+				State:   dc.State,
+				Status:  dc.Status,
+				Ports:   ports,
 			})
 		}
 	}
