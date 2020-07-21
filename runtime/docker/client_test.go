@@ -1,7 +1,6 @@
-package tests
+package docker
 
 import (
-	docker "emsci/runtime/docker"
 	runtimeTypes "emsci/runtime/types"
 	"testing"
 )
@@ -9,7 +8,7 @@ import (
 //TODO: move these to an intergration test suite
 func TestNewClient(t *testing.T) {
 	t.Run("Should return a docker client", func(t *testing.T) {
-		client := docker.DockerClient{
+		client := DockerClient{
 			Api: NewMockDockerClient(),
 		}
 

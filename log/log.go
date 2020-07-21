@@ -3,7 +3,7 @@ package log
 import (
 	"os"
 
-	"github.com/Sirupsen/logrus"
+	"github.com/sirupsen/logrus"
 )
 
 // Logger defines a set of methods for writing application logs. Derived from and

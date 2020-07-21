@@ -1,10 +1,9 @@
-package tests
+package docker
 
 import (
 	"bytes"
 	"context"
 	"errors"
-	"fmt"
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/api/types/container"
 	"github.com/docker/docker/api/types/network"
@@ -164,10 +163,6 @@ func (client *MockDockerClient) ContainerList(ctx context.Context, options types
 	containers := make([]types.Container, 0)
 
 	for k, v := range client.startedContainers {
-		fmt.Println("2342423")
-		fmt.Println(k)
-		fmt.Println(v)
-		fmt.Println("******")
 		containers = append(containers, types.Container{
 			ID:    k,
 			Names: []string{"/" + v},

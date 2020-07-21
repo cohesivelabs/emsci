@@ -1,13 +1,12 @@
-package tests
+package docker
 
 import (
 	"context"
-	"emsci/runtime/docker"
 	"testing"
 )
 
 func TestDockerClient_ImagePull(t *testing.T) {
-	client := docker.DockerClient{
+	client := DockerClient{
 		Api: NewMockDockerClient(),
 	}
 

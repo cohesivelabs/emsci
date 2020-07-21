@@ -6,9 +6,14 @@ services:
         context: .
     environment:
       - DOCKER_HOST=tcp://docker:2375
+    volumes:
+      - .:/app
+    environment:
+      - GO111MODULE=on
     depends_on:
       - docker
-    command: tail -f /dev/null
+    command: /bin/bash
+    working_dir: /app
   docker:
     image: docker:stable-dind
     privileged: true

@@ -1,8 +1,7 @@
-package tests
+package docker
 
 import (
 	"context"
-	"emsci/runtime/docker"
 	"fmt"
 	uuid "github.com/gofrs/uuid"
 	"testing"
@@ -11,7 +10,7 @@ import (
 func TestDockerClient_ContainerCreate(t *testing.T) {
 	t.Run("should be able to create a container", func(t *testing.T) {
 
-		client := docker.DockerClient{
+		client := DockerClient{
 			Api: NewMockDockerClient(),
 		}
 
@@ -56,7 +55,7 @@ func TestDockerClient_ContainerGetByName(t *testing.T) {
 	t.Run("Should be able to get container by name", func(t *testing.T) {
 		containerName := "container-getByName-test-1-" + uuid.Must(uuid.NewV4()).String()
 
-		client := docker.DockerClient{
+		client := DockerClient{
 			Api: NewMockDockerClient(),
 		}
 
@@ -99,7 +98,7 @@ func TestDockerClient_ContainerGetByName(t *testing.T) {
 
 func TestDockerClient_ContainerList(t *testing.T) {
 	t.Run("should be able to get a list of containers", func(t *testing.T) {
-		client := docker.DockerClient{
+		client := DockerClient{
 			Api: NewMockDockerClient(),
 		}
 

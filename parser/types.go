@@ -22,6 +22,6 @@ type CIConfig struct {
 	Test       []ContainerCommand
 	Env        []string
 	Deps       []Dep
-	PreStart   []Command
+	PostInit   []Command
 	SharedDeps []Dep
 }
